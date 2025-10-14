@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Calculator UI (HTML + CSS + JS)</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #0b1220;
+      --display: #e6eef8;
+      --btn: #1f2937;
+      --accent: #10b981; /* operators */
+      --accent-2: #2563eb; /* equals */
+      --muted: #94a3b8;
+      font-family: Inter, system-ui, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, var(--bg), #020617 80%);
+      color: var(--display);
+    }
+
+    .calculator {
+      width: 360px;
+      background: linear-gradient(180deg, var(--card), #071028);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.7);
+      padding: 20px;
+    }
+
+    .display {
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      padding: 18px 14px;
+      min-height: 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-end;
+      margin-bottom: 18px;
+    }
+
+    .display .history {
+      font-size: 14px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .display .current {
+      font-size: 28px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .pad {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 16px 0;
+      border: none;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      background: linear-gradient(180deg, var(--btn), #0b1220);
+      color: var(--display);
+      box-shadow: 0 4px 8px rgba(2,6,23,0.6);
+      transition: transform .08s ease;
+      user-select: none;
+    }
+    .btn:active { transform: scale(0.96); }
+
+    .btn--op { color: var(--accent); }
+    .btn--eq { color: var(--accent-2); }
+    .btn--clear { color: #f87171; }
+
+    .btn--wide { grid-column: span 2; }
+
+    @media (max-width: 420px) {
+      .btn { padding: 12px 0; font-size: 16px; }
+      .display .current { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="calculator">
+    <section class="display">
+      <div class="history">0</div>
+      <div class="current">0</div>
+    </section>
+
+    <section class="pad">
+      <!-- Row 1 -->
+      <button class="btn btn--clear" onclick="clearAll()">C</button>
+      <button class="btn btn--op" onclick="updateDisplay('%')">%</button>
+      <button class="btn btn--op" onclick="backspace()">⌫</button>
+      <button class="btn btn--op" onclick="updateDisplay('/')">/</button>
+
+      <!-- Row 2 -->
+      <button class="btn" onclick="updateDisplay('7')">7</button>
+      <button class="btn" onclick="updateDisplay('8')">8</button>
+      <button class="btn" onclick="updateDisplay('9')">9</button>
+      <button class="btn btn--op" onclick="updateDisplay('*')">*</button>
+
+      <!-- Row 3 -->
+      <button class="btn" onclick="updateDisplay('4')">4</button>
+      <button class="btn" onclick="updateDisplay('5')">5</button>
+      <button class="btn" onclick="updateDisplay('6')">6</button>
+      <button class="btn btn--op" onclick="updateDisplay('-')">-</button>
+
+      <!-- Row 4 -->
+      <button class="btn" onclick="updateDisplay('1')">1</button>
+      <button class="btn" onclick="updateDisplay('2')">2</button>
+      <button class="btn" onclick="updateDisplay('3')">3</button>
+      <button class="btn btn--op" onclick="updateDisplay('+')">+</button>
+
+      <!-- Row 5 -->
+      <button class="btn btn--wide" onclick="updateDisplay('0')">0</button>
+      <button class="btn" onclick="updateDisplay('.')">.</button>
+      <button class="btn btn--eq" onclick="calculate()">=</button>
+    </section>
+  </main>
+
+  <script>
+    let currentDisplay = '';
+    const current = document.querySelector('.current');
+    const history = document.querySelector('.history');
+
+    function updateDisplay(value) {
+      // Prevent multiple decimals
+      if (value === '.' && currentDisplay.endsWith('.')) return;
+      currentDisplay += value;
+      current.innerText = currentDisplay;
+    }
+
+    function clearAll() {
+      currentDisplay = '';
+      current.innerText = '0';
+      history.innerText = '0';
+    }
+
+    function backspace() {
+      currentDisplay = currentDisplay.slice(0, -1);
+      current.innerText = currentDisplay || '0';
+    }
+
+    function calculate() {
+      try {
+        // Replace % with /100 before evaluating
+        const expression = currentDisplay.replace(/%/g, '/100');
+        history.innerText = currentDisplay;
+        currentDisplay = eval(expression).toString();
+        current.innerText = currentDisplay;
+      } catch {
+        current.innerText = 'Error';
+        currentDisplay = '';
+      }
+    }
+
+    // Optional: Keyboard input support
+    document.addEventListener('keydown', (e) => {
+      const key = e.key;
+      if (/[0-9+\-*/.%]/.test(key)) updateDisplay(key);
+      else if (key === 'Enter' || key === '=') calculate();
+      else if (key === 'Backspace') backspace();
+      else if (key === 'Escape') clearAll();
+    });
+  </script>
+</body>
+</html>
