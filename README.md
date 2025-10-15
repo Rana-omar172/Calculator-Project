@@ -8,7 +8,7 @@ A simple, modern, and responsive **Calculator UI** built using **HTML**, **CSS**
 ---
 
 ## 📸 Screenshot
-![Calculator Preview]([![calculator](https://github.com/user-attachments/assets/af2208a9-94d3-47f2-8698-ea012fc72a29](https://github.com/Rana-omar172/Calculator-Project/blob/main/calculator.jpg))
+![Calculator Preview]([[![calculator](https://github.com/user-attachments/assets/af2208a9-94d3-47f2-8698-ea012fc72a29](https://github.com/Rana-omar172/Calculator-Project/blob/main/calculator.jpg](https://github.com/Rana-omar172/Calculator-Project/commit/35a2afb1eeb42f27cf2baed95c5e548cde7714f4)))
 )
 
 *(Add your screenshot file in repo and rename it `screenshot.png`)*
@@ -35,5 +35,6 @@ A simple, modern, and responsive **Calculator UI** built using **HTML**, **CSS**
 1. Clone the repo  
    ```bash
    git clone https://github.com/Rana-omar172/Calculator-Project.git
+
 
 
